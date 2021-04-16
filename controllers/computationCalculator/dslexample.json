@@ -1,0 +1,58 @@
+{
+"metrics": {
+
+       
+            "computing": "actual",
+            "element": "number",
+            "query":{
+
+                
+                    "size": 1,
+                    "track_total_hits": true,
+                    "sort": [{
+                            "TIMESTAMP-NEXO-DATE": "desc"
+                        }
+                    ],
+                    
+                    "query": {
+                        "bool": {
+                            "must": [{
+                                    "match": {
+                                        "CHANNEL.keyword": "MONITORING"
+                                    }
+                                }, {
+                                    "match": {
+                                        "EVENT_TYPE.keyword": "REST"
+                                    }
+                                }
+                                , {
+                                    "match": {
+                                        "CODE_ERROR.keyword": "200"
+                                    }
+                                },
+                                {
+                                    "range": {
+                                        "TIMESTAMP-NEXO-DATE": {
+                                            "gt": "2018-04-15T10:10:51.168Z"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                        
+                    }
+                
+
+            },
+
+            "scope": {
+                "$ref": "#/context/definitions/scopes/servicio"
+            }
+        
+    
+
+},
+"config": {
+
+}
+}
