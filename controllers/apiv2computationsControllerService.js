@@ -60,7 +60,7 @@ module.exports.getComputation = (computationId) => {
 };
 
 const validateInput = (dsl) => {
-  console.log("dsl: " + JSON.stringify(dsl))
+  console.log('dsl: ' + JSON.stringify(dsl));
   return new Promise((resolve, reject) => {
     try {
       const initial = dsl.metric.window.initial;
@@ -71,10 +71,9 @@ const validateInput = (dsl) => {
       var iso8601Millis = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]+)?\.([0-9][0-9][0-9])(Z)?$/;
 
       if (Date.parse(end) - Date.parse(initial) < 0) {
-      
-       reject(new Error('End period date must be later than the initial.'));
+        reject(new Error('End period date must be later than the initial.'));
       } else if (Date.parse(new Date().toISOString()) - Date.parse(end) < 0) {
-          //Removed to allow calculation for the current day
+        // Removed to allow calculation for the current day
       //  reject(new Error('End period date must be earlier than the actual date.'));
       } else if ((!iso8601.test(initial) && !iso8601Millis.test(initial)) || (!iso8601.test(end) && !iso8601Millis.test(end))) {
         reject(new Error('Dates must fit the standard ISO 8601.'));
@@ -147,20 +146,18 @@ const calculateComputations = (dsl, periods) => {
       for (const period of periods) {
         const promise = new Promise((resolve, reject) => {
           computationCalculator.compute(dsl, period).then(result => {
-              result.forEach(rs=>{
-                computations.push({
-                  scope: rs.scope,
-                  period: {
-                    from: period.from, to: period.to
-                  },
-                  evidences: rs.evidences,
-                  value: rs.metric
-                });
+            result.forEach(rs => {
+              computations.push({
+                scope: rs.scope,
+                period: {
+                  from: period.from, to: period.to
+                },
+                evidences: rs.evidences,
+                value: rs.metric
               });
-              console.log("RESULTS=>" + JSON.stringify(computations))
-              resolve();
-  
-
+            });
+            console.log('RESULTS=>' + JSON.stringify(computations));
+            resolve();
           }).catch(err => {
             reject(err);
           });
