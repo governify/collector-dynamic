@@ -19,7 +19,6 @@ process.on('SIGTERM', function onSigterm () {
   shutdown();
 });
 
-
 const shutdown = () => {
   server.undeploy();
 };
