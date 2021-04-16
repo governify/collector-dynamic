@@ -3,9 +3,6 @@
 const deploy = (env) => {
   return new Promise((resolve, reject) => {
     try {
-
-
-
       var fs = require('fs');
       var http = require('http');
       var path = require('path');
@@ -23,7 +20,7 @@ const deploy = (env) => {
       var spec = fs.readFileSync(path.join(__dirname, '/api/oas-doc.yaml'), 'utf8');
       var oasDoc = jsyaml.safeLoad(spec);
 
-      console.log(path.join(__dirname, './controllers'))
+      console.log(path.join(__dirname, './controllers'));
 
       var optionsObject = {
         controllers: path.join(__dirname, './controllers'),
@@ -37,7 +34,6 @@ const deploy = (env) => {
       oasTools.initialize(oasDoc, app, function () {
         http.createServer(app).listen(serverPort, function () {
           if (env !== 'test') {
-
             console.log('App running at http://localhost:' + serverPort);
             console.log('________________________________________________________________');
             if (optionsObject.docs !== false) {
@@ -47,8 +43,8 @@ const deploy = (env) => {
           }
         });
         resolve();
-      })
-      //app.use(require('apisense')())
+      });
+      // app.use(require('apisense')())
       app.get('/info', function (req, res) {
         res.send({
           info: 'This API was generated using oas-generator!',
@@ -56,7 +52,7 @@ const deploy = (env) => {
         });
       });
     } catch (err) {
-      console.log(JSON.stringify(err))
+      console.log(JSON.stringify(err));
       reject(err);
     }
   });
@@ -65,7 +61,6 @@ const deploy = (env) => {
 const undeploy = () => {
   process.exit();
 };
-
 
 module.exports = {
   deploy: deploy,
