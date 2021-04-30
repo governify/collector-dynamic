@@ -22,10 +22,11 @@
     "body-parser": "^1.18.3",
     "elastic-apm-node": "^3.6.1",
     "express": "^4.16.3",
-    "governify-commons": "^1.5.3",
+    "governify-commons": "^1.8.5",
     "js-yaml": "^3.14.0",
     "mustache": "^4.0.1",
     "oas-tools": "^2.1.8",
+    "require-from-string": "^2.0.2",
     "require-from-url": "^3.1.3"
   },
   "devDependencies": {

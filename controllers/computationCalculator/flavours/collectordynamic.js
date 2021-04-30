@@ -29,7 +29,8 @@ async function applyStep (dsl, period, inputs, responseList) {
 
     const body = JSON.parse(JSON.stringify(inputs.request.body).replace(/>>>period.from<<</g, realperiod.from).replace(/>>>period.to<<</g, realperiod.to));
     console.log('BODSY: ' + JSON.stringify(body));
-    const res = await governify.httpClient(url, {
+    const res = await governify.httpClient.request({
+      url: url,
       method: 'POST',
       headers: { Authorization: credentials.elk, 'Content-Type': 'application/json' },
       json: body
