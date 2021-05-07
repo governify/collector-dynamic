@@ -1,7 +1,7 @@
 'use strict';
 /* eslint-disable no-async-promise-executor */
 
-const got = require('got');
+const governify = require('governify-commons');
 const config = require('../../../config');
 const credentials = config.credentials();
 
@@ -29,11 +29,12 @@ async function applyStep (dsl, period, inputs, responseList) {
 
     const body = JSON.parse(JSON.stringify(inputs.request.body).replace(/>>>period.from<<</g, realperiod.from).replace(/>>>period.to<<</g, realperiod.to));
     console.log('BODSY: ' + JSON.stringify(body));
-    const res = await got(url, {
+    const res = await governify.httpClient.request({
+      url: url,
       method: 'POST',
       headers: { Authorization: credentials.elk, 'Content-Type': 'application/json' },
       json: body
-    }).json();
+    }).then(response => { return response.data; }).catch(console.log);
     console.log('REPSUESTA' + JSON.stringify(res));
 
     var resultList = Object.getPropertyByString(res, 'aggregations.services.buckets');

@@ -15,7 +15,7 @@ const deploy = (env) => {
       }));
       var oasTools = require('oas-tools');
       var jsyaml = require('js-yaml');
-      var serverPort = 80;
+      var serverPort = process.env.PORT || 5501;
 
       var spec = fs.readFileSync(path.join(__dirname, '/api/oas-doc.yaml'), 'utf8');
       var oasDoc = jsyaml.safeLoad(spec);

@@ -1,10 +1,11 @@
 'use strict';
 
-const server = require('./server');
-require('./objectUtils');
+const governify = require('governify-commons');
 
-server.deploy('prod').catch(err => {
-  console.log(err);
+const server = require('./server');
+
+governify.init().then(() => {
+  server.deploy('prod').catch(console.log);
 });
 
 // quit on ctrl-c when running docker in terminal
