@@ -11,7 +11,7 @@ module.exports.compute = async (dsl, period) => {
       for (const stepKey in dsl.metric.params.steps) {
         var stepModel = dsl.metric.params.steps[stepKey];
         console.log('Executing STEP: ' + JSON.stringify(stepModel));
-       
+
         var stepModule = await governify.utils.requireFromFileOrURL(stepModel.script);
         responseList = await stepModule.applyStep(dsl, period, stepModel.inputs, responseList);
         console.log('STEPKEY: ' + stepKey + ' R-> ' + JSON.stringify(responseList));
