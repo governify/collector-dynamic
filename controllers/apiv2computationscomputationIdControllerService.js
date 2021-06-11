@@ -2,6 +2,9 @@
 
 const postControllerService = require('./apiv2computationsControllerService');
 
+const governify = require('governify-commons');
+const logger = governify.getLogger().tag('initialization')
+
 module.exports.findComputationById = function findComputationById (req, res, next) {
   try {
     postControllerService.getComputation(req.computationId.value).then((computation) => {
@@ -17,11 +20,11 @@ module.exports.findComputationById = function findComputationById (req, res, nex
         sendWithStatus(res, 500, 'Internal server error.');
       }
     }).catch(err => {
-      console.log('error - findComputationById.getComputation:', err.message);
+      logger.error('error - findComputationById.getComputation:', err.message);
       sendWithStatus(res, 500, 'Internal server error: ' + err.message);
     });
   } catch (err) {
-    console.log('error - findComputationById:', err.message);
+    logger.error('error - findComputationById:', err.message);
     sendWithStatus(res, 500, 'Internal server error: ' + err.message);
   }
 };

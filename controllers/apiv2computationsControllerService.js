@@ -3,6 +3,8 @@
 const crypto = require('crypto');
 
 const computationCalculator = require('./computationCalculator');
+const governify = require('governify-commons');
+const logger = governify.getLogger().tag('computationService')
 
 const computationsBD = {};
 
@@ -21,7 +23,7 @@ module.exports.addComputation = function addComputation (req, res, next) {
           // Set the computations to the bd
           computationsBD[computationId] = computations;
         }).catch(err => {
-          console.log('error - addComputation.calculateComputations:', err.message);
+          logger.error('error - addComputation.calculateComputations:', err.message);
           computationsBD[computationId] = err.message;
         });
 
@@ -33,15 +35,15 @@ module.exports.addComputation = function addComputation (req, res, next) {
           computation: '/api/v2/computations/' + computationId
         });
       }).catch(err => {
-        console.log('error - addComputation.getPeriods:', err.message);
+        logger.error('error - addComputation.getPeriods:', err.message);
         sendError(res, err);
       });
     }).catch(err => {
-      console.log('error - addComputation.validateInput:', err.message);
+      logger.error('error - addComputation.validateInput:', err.message);
       sendError(res, err);
     });
   } catch (err) {
-    console.log('error - addComputation:', err.message);
+    logger.error('error - addComputation:', err.message);
     sendError(res, err);
   }
 };
@@ -60,7 +62,7 @@ module.exports.getComputation = (computationId) => {
 };
 
 const validateInput = (dsl) => {
-  console.log('dsl: ' + JSON.stringify(dsl));
+  logger.info('dsl: ' + JSON.stringify(dsl));
   return new Promise((resolve, reject) => {
     try {
       const initial = dsl.metric.window.initial;
@@ -156,7 +158,7 @@ const calculateComputations = (dsl, periods) => {
                 value: rs.metric
               });
             });
-            console.log('RESULTS=>' + JSON.stringify(computations));
+            logger.info('RESULTS=>' + JSON.stringify(computations));
             resolve();
           }).catch(err => {
             reject(err);

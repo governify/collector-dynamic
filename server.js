@@ -1,14 +1,18 @@
 'use strict';
 
-const deploy = (env) => {
+const { logger } = require('oas-tools/src/configurations');
+
+const deploy = (env, commonsMiddleware) => {
   return new Promise((resolve, reject) => {
     try {
       var fs = require('fs');
       var http = require('http');
       var path = require('path');
-
+      const governify = require('governify-commons');
+      const logger = governify.getLogger().tag('initialization');
       var express = require('express');
       var app = express();
+      app.use(commonsMiddleware)
       var bodyParser = require('body-parser');
       app.use(bodyParser.json({
         strict: false
@@ -19,8 +23,6 @@ const deploy = (env) => {
 
       var spec = fs.readFileSync(path.join(__dirname, '/api/oas-doc.yaml'), 'utf8');
       var oasDoc = jsyaml.safeLoad(spec);
-
-      console.log(path.join(__dirname, './controllers'));
 
       var optionsObject = {
         controllers: path.join(__dirname, './controllers'),
@@ -34,11 +36,11 @@ const deploy = (env) => {
       oasTools.initialize(oasDoc, app, function () {
         http.createServer(app).listen(serverPort, function () {
           if (env !== 'test') {
-            console.log('App running at http://localhost:' + serverPort);
-            console.log('________________________________________________________________');
+           logger.info('App running at http://localhost:' + serverPort);
+           logger.info('________________________________________________________________');
             if (optionsObject.docs !== false) {
-              console.log('API docs (Swagger UI) available on http://localhost:' + serverPort + '/docs');
-              console.log('________________________________________________________________');
+             logger.info('API docs (Swagger UI) available on http://localhost:' + serverPort + '/docs');
+             logger.info('________________________________________________________________');
             }
           }
         });
@@ -52,7 +54,7 @@ const deploy = (env) => {
         });
       });
     } catch (err) {
-      console.log(JSON.stringify(err));
+      logger.error("Error deploying collector-dynamic ", err);
       reject(err);
     }
   });

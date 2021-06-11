@@ -1,6 +1,8 @@
 var assert = require('assert');
 var request = require('request');
 var server = require('../server');
+const governify = require('governify-commons');
+const logger = governify.getLogger().tag('tests')
 
 let computationEP;
 
@@ -145,7 +147,7 @@ const initializeDataAndServer = (done) => {
     server.deploy('test').then(() => {
         done();
     }).catch((err) => {
-        console.log(err);
+        logger.error(err);
         done();
     });
 
