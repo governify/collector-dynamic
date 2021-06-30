@@ -12,7 +12,7 @@ const deploy = (env, commonsMiddleware) => {
       const logger = governify.getLogger().tag('initialization');
       var express = require('express');
       var app = express();
-      app.use(commonsMiddleware)
+      app.use(commonsMiddleware);
       var bodyParser = require('body-parser');
       app.use(bodyParser.json({
         strict: false
@@ -36,11 +36,11 @@ const deploy = (env, commonsMiddleware) => {
       oasTools.initialize(oasDoc, app, function () {
         http.createServer(app).listen(serverPort, function () {
           if (env !== 'test') {
-           logger.info('App running at http://localhost:' + serverPort);
-           logger.info('________________________________________________________________');
+            logger.info('App running at http://localhost:' + serverPort);
+            logger.info('________________________________________________________________');
             if (optionsObject.docs !== false) {
-             logger.info('API docs (Swagger UI) available on http://localhost:' + serverPort + '/docs');
-             logger.info('________________________________________________________________');
+              logger.info('API docs (Swagger UI) available on http://localhost:' + serverPort + '/docs');
+              logger.info('________________________________________________________________');
             }
           }
         });
@@ -54,7 +54,7 @@ const deploy = (env, commonsMiddleware) => {
         });
       });
     } catch (err) {
-      logger.error("Error deploying collector-dynamic ", err);
+      logger.error('Error deploying collector-dynamic ', err);
       reject(err);
     }
   });

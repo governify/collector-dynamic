@@ -2,10 +2,9 @@
 /* eslint-disable no-async-promise-executor */
 
 const governify = require('governify-commons');
-const logger = governify.getLogger().tag('computerDynamic')
+const logger = governify.getLogger().tag('computerDynamic');
 const config = require('../../../config');
 const credentials = config.credentials();
-
 
 async function applyStep (dsl, period, inputs, responseList) {
   return new Promise(async function (resolve, reject) {

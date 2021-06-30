@@ -3,7 +3,7 @@
 const postControllerService = require('./apiv2computationsControllerService');
 
 const governify = require('governify-commons');
-const logger = governify.getLogger().tag('initialization')
+const logger = governify.getLogger().tag('initialization');
 
 module.exports.findComputationById = function findComputationById (req, res, next) {
   try {

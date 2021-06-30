@@ -2,7 +2,7 @@
 /* eslint-disable no-async-promise-executor */
 
 const governify = require('governify-commons');
-const logger = governify.getLogger().tag('computationCalculator')
+const logger = governify.getLogger().tag('computationCalculator');
 
 module.exports.compute = async (dsl, period) => {
   return new Promise(async (resolve, reject) => {

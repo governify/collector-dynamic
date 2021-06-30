@@ -1,7 +1,7 @@
 'use strict';
 
 const governify = require('governify-commons');
-const logger = governify.getLogger().tag('initialization')
+const logger = governify.getLogger().tag('initialization');
 
 const server = require('./server');
 

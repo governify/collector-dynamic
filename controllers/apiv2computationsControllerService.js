@@ -4,7 +4,7 @@ const crypto = require('crypto');
 
 const computationCalculator = require('./computationCalculator');
 const governify = require('governify-commons');
-const logger = governify.getLogger().tag('computationService')
+const logger = governify.getLogger().tag('computationService');
 
 const computationsBD = {};
 
