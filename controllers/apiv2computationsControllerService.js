@@ -95,42 +95,43 @@ const getPeriods = (dsl) => {
       const windowPeriod = dsl.metric.window.period;
 
       // Translate period string to actual days and obtain number of periods
-      const periodLengths = {
-        daily: 1,
-        weekly: 7,
-        biweekly: 14,
-        monthly: 30,
-        bimonthly: 60,
-        annually: 365
-      };
-      const periodLength = periodLengths[windowPeriod];
-      if (periodLength === undefined) { reject(new Error('metric.window.period must be within these: daily, weekly, biweekly, monthly, bimonthly, annually.')); }
+      //const periodLengths = {
+      //  daily: 1,
+      //  weekly: 7,
+      //  biweekly: 14,
+      //  monthly: 30,
+      //  bimonthly: 60,
+      //  annually: 365
+      //};
+      //const periodLength = periodLengths[windowPeriod];
+      //if (periodLength === undefined) { reject(new Error('metric.window.period must be within these: daily, weekly, biweekly, monthly, bimonthly, annually.')); }
 
       // Obtain periods
       const periods = [];
 
-      let fromStr = initial;
-      let toDate;
-      let toStr;
-
-      let keepGoing = true;
-      while (keepGoing) {
-        // Set from after each iteration
-        if (toStr !== undefined) {
-          fromStr = toStr;
-        }
-
-        // Check if to is after end of periods
-        toDate = new Date(Date.parse(fromStr) + periodLength * 24 * 60 * 60 * 1000);
-        if (toDate >= new Date(Date.parse(end))) {
-          toDate = new Date(Date.parse(end));
-          keepGoing = false;
-        }
-        toStr = toDate.toISOString();
-
-        // Push into the array
-        periods.push({ from: fromStr, to: toStr });
-      }
+      //let fromStr = initial;
+      //let toDate;
+      //let toStr;
+//
+      //let keepGoing = true;
+      //while (keepGoing) {
+      //  // Set from after each iteration
+      //  if (toStr !== undefined) {
+      //    fromStr = toStr;
+      //  }
+//
+      //  // Check if to is after end of periods
+      //  toDate = new Date(Date.parse(fromStr) + periodLength * 24 * 60 * 60 * 1000);
+      //  if (toDate >= new Date(Date.parse(end))) {
+      //    toDate = new Date(Date.parse(end));
+      //    keepGoing = false;
+      //  }
+      //  toStr = toDate.toISOString();
+//
+      //  // Push into the array
+      //  periods.push({ from: fromStr, to: toStr });
+      //}
+      periods.push({ from: initial, to: end });
 
       resolve(periods);
     } catch (err) {
@@ -145,6 +146,7 @@ const calculateComputations = (dsl, periods) => {
       const promises = [];
       const computations = [];
 
+       
       for (const period of periods) {
         const promise = new Promise((resolve, reject) => {
           computationCalculator.compute(dsl, period).then(result => {
