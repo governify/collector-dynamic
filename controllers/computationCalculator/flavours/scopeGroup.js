@@ -17,7 +17,7 @@ const logger = governify.getLogger().tag('scopeGroup');
 async function applyStep (dsl, period, inputs, responseList) {
   return new Promise(async function (resolve, reject) {
     // Create the inverted map with the assocations groups
-    var invertedMap = {};
+    const invertedMap = {};
     Object.keys(inputs.groups).forEach(groupName => {
       inputs.groups[groupName].forEach(servicio => {
         invertedMap[servicio] = groupName;

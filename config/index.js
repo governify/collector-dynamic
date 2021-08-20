@@ -1,14 +1,14 @@
 'use strict';
 
-var jsyaml = require('js-yaml');
+const jsyaml = require('js-yaml');
 const fs = require('fs');
 const path = require('path');
 const mustache = require('mustache');
 mustache.escape = function (text) { return text; };
 
-var configStringTemplate = fs.readFileSync(path.resolve(__dirname, './credentials/credentials.yaml'), 'utf8');
-var configString = mustache.render(configStringTemplate, process.env, {}, ['$_[', ']']);
-var credentials, config;
+const configStringTemplate = fs.readFileSync(path.resolve(__dirname, './credentials/credentials.yaml'), 'utf8');
+const configString = mustache.render(configStringTemplate, process.env, {}, ['$_[', ']']);
+let credentials, config;
 if (configString) {
   credentials = jsyaml.safeLoad(configString);
 }

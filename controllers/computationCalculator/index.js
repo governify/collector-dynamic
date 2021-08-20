@@ -7,13 +7,13 @@ const logger = governify.getLogger().tag('computationCalculator');
 module.exports.compute = async (dsl, period) => {
   return new Promise(async (resolve, reject) => {
     try {
-      var responseList = [];
+      let responseList = [];
 
       for (const stepKey in dsl.metric.params.steps) {
-        var stepModel = dsl.metric.params.steps[stepKey];
+        const stepModel = dsl.metric.params.steps[stepKey];
         logger.info('Executing STEP: ' + JSON.stringify(stepModel));
 
-        var stepModule = await governify.utils.requireFromFileOrURL(stepModel.script);
+        const stepModule = await governify.utils.requireFromFileOrURL(stepModel.script);
         responseList = await stepModule.applyStep(dsl, period, stepModel.inputs, responseList);
         logger.info('STEPKEY: ' + stepKey + ' R-> ' + JSON.stringify(responseList));
       }
