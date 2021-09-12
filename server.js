@@ -5,26 +5,26 @@ const { logger } = require('oas-tools/src/configurations');
 const deploy = (env, commonsMiddleware) => {
   return new Promise((resolve, reject) => {
     try {
-      var fs = require('fs');
-      var http = require('http');
-      var path = require('path');
+      const fs = require('fs');
+      const http = require('http');
+      const path = require('path');
       const governify = require('governify-commons');
       const logger = governify.getLogger().tag('initialization');
-      var express = require('express');
-      var app = express();
+      const express = require('express');
+      const app = express();
       app.use(commonsMiddleware);
-      var bodyParser = require('body-parser');
+      const bodyParser = require('body-parser');
       app.use(bodyParser.json({
         strict: false
       }));
-      var oasTools = require('oas-tools');
-      var jsyaml = require('js-yaml');
-      var serverPort = process.env.PORT || 5501;
+      const oasTools = require('oas-tools');
+      const jsyaml = require('js-yaml');
+      const serverPort = process.env.PORT || 5501;
 
-      var spec = fs.readFileSync(path.join(__dirname, '/api/oas-doc.yaml'), 'utf8');
-      var oasDoc = jsyaml.safeLoad(spec);
+      const spec = fs.readFileSync(path.join(__dirname, '/api/oas-doc.yaml'), 'utf8');
+      const oasDoc = jsyaml.safeLoad(spec);
 
-      var optionsObject = {
+      const optionsObject = {
         controllers: path.join(__dirname, './controllers'),
         loglevel: env === 'test' ? 'error' : 'info',
         strict: false,

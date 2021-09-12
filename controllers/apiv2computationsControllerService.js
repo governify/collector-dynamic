@@ -69,8 +69,8 @@ const validateInput = (dsl) => {
       const end = dsl.metric.window.end;
 
       // ISO8601 Date validation
-      var iso8601 = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]+)?(Z)?$/;
-      var iso8601Millis = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]+)?\.([0-9][0-9][0-9])(Z)?$/;
+      const iso8601 = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]+)?(Z)?$/;
+      const iso8601Millis = /^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]+)?\.([0-9][0-9][0-9])(Z)?$/;
 
       if (Date.parse(end) - Date.parse(initial) < 0) {
         reject(new Error('End period date must be later than the initial.'));
@@ -92,45 +92,45 @@ const getPeriods = (dsl) => {
     try {
       const initial = dsl.metric.window.initial;
       const end = dsl.metric.window.end;
-      const windowPeriod = dsl.metric.window.period;
 
       // Translate period string to actual days and obtain number of periods
-      const periodLengths = {
-        daily: 1,
-        weekly: 7,
-        biweekly: 14,
-        monthly: 30,
-        bimonthly: 60,
-        annually: 365
-      };
-      const periodLength = periodLengths[windowPeriod];
-      if (periodLength === undefined) { reject(new Error('metric.window.period must be within these: daily, weekly, biweekly, monthly, bimonthly, annually.')); }
+      // const periodLengths = {
+      //  daily: 1,
+      //  weekly: 7,
+      //  biweekly: 14,
+      //  monthly: 30,
+      //  bimonthly: 60,
+      //  annually: 365
+      // };
+      // const periodLength = periodLengths[windowPeriod];
+      // if (periodLength === undefined) { reject(new Error('metric.window.period must be within these: daily, weekly, biweekly, monthly, bimonthly, annually.')); }
 
       // Obtain periods
       const periods = [];
 
-      let fromStr = initial;
-      let toDate;
-      let toStr;
-
-      let keepGoing = true;
-      while (keepGoing) {
-        // Set from after each iteration
-        if (toStr !== undefined) {
-          fromStr = toStr;
-        }
-
-        // Check if to is after end of periods
-        toDate = new Date(Date.parse(fromStr) + periodLength * 24 * 60 * 60 * 1000);
-        if (toDate >= new Date(Date.parse(end))) {
-          toDate = new Date(Date.parse(end));
-          keepGoing = false;
-        }
-        toStr = toDate.toISOString();
-
-        // Push into the array
-        periods.push({ from: fromStr, to: toStr });
-      }
+      // let fromStr = initial;
+      // let toDate;
+      // let toStr;
+      //
+      // let keepGoing = true;
+      // while (keepGoing) {
+      //  // Set from after each iteration
+      //  if (toStr !== undefined) {
+      //    fromStr = toStr;
+      //  }
+      //
+      //  // Check if to is after end of periods
+      //  toDate = new Date(Date.parse(fromStr) + periodLength * 24 * 60 * 60 * 1000);
+      //  if (toDate >= new Date(Date.parse(end))) {
+      //    toDate = new Date(Date.parse(end));
+      //    keepGoing = false;
+      //  }
+      //  toStr = toDate.toISOString();
+      //
+      //  // Push into the array
+      //  periods.push({ from: fromStr, to: toStr });
+      // }
+      periods.push({ from: initial, to: end });
 
       resolve(periods);
     } catch (err) {
