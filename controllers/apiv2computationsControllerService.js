@@ -62,7 +62,7 @@ module.exports.getComputation = (computationId) => {
 };
 
 const validateInput = (dsl) => {
-  logger.info('dsl: ' + JSON.stringify(dsl));
+  logger.debug('dsl: ' + JSON.stringify(dsl));
   return new Promise((resolve, reject) => {
     try {
       const initial = dsl.metric.window.initial;
@@ -158,7 +158,7 @@ const calculateComputations = (dsl, periods) => {
                 value: rs.metric
               });
             });
-            logger.info('RESULTS=>' + JSON.stringify(computations));
+            logger.debug('RESULTS=>' + JSON.stringify(computations));
             resolve();
           }).catch(err => {
             reject(err);
