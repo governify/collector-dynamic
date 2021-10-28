@@ -1,3 +1,25 @@
+# [1.3.0](https://github.com/governify/collector-dynamic/compare/v1.2.0...v1.3.0) (2021-10-28)
+
+
+### Bug Fixes
+
+* commented bluejay e2e ([7797d11](https://github.com/governify/collector-dynamic/commit/7797d117480c238e80147409b00d4edc93abc9f1))
+* lint ([e091660](https://github.com/governify/collector-dynamic/commit/e091660fcd9065e064cd4476bdd2d03889a4e51e))
+* lint ([ee36fe9](https://github.com/governify/collector-dynamic/commit/ee36fe98030f57735a6caefbf16ab14e6e7a4560))
+* Set some logs to debug level ([1185f45](https://github.com/governify/collector-dynamic/commit/1185f450f3e5c7b609f38b7a6a627a8d9a52658b))
+* unit tests ([1cd631d](https://github.com/governify/collector-dynamic/commit/1cd631d756217323a124608eb113293b2bd34351))
+
+
+### Features
+
+* E2E assets to develop ([c7618e5](https://github.com/governify/collector-dynamic/commit/c7618e5fe6995b6fa772ba251810d662d2877800))
+* New logs implemented ([5e39515](https://github.com/governify/collector-dynamic/commit/5e39515e401a8e76ab3a57020b1a0d3bda1d06ef))
+* npm update governify-commons ([eefd1d8](https://github.com/governify/collector-dynamic/commit/eefd1d8241c6d4a73c1985427c4f720bdff96922))
+* refactor period calculation ([a275cdc](https://github.com/governify/collector-dynamic/commit/a275cdca2d57989bf9d429ec4107340c382e1d65))
+* update commons v1.14 ([427b382](https://github.com/governify/collector-dynamic/commit/427b38217903f848e0537740f5c8a97a57c02756))
+
+
+
 # [1.2.0](https://github.com/governify/collector-dynamic/compare/v1.1.0...v1.2.0) (2021-05-07)
 
 
