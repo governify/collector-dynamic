@@ -1,8 +1,12 @@
 var assert = require('assert');
 var request = require('request');
 var server = require('../server');
+const governify = require('governify-commons');
+const logger = governify.getLogger().tag('tests')
+const fs = require('fs');
+const path = require('path');
 
-let computationEP;
+var computationEP;
 
 describe('Array', function () {
     before((done) => {
@@ -27,7 +31,7 @@ function apiRestRequestControllersTest() {
     it('should respond with 201 Created on POST and have computation in body', function (done) {
         try {
             const options = {
-                url: 'http://localhost:8081/api/v2/computations',
+                url: 'http://localhost:5501/api/v2/computations',
                 json: postData1,
                 headers: {
                     'User-Agent': 'request',
@@ -53,7 +57,7 @@ function apiRestRequestControllersTest() {
         try {
             assert.notStrictEqual(undefined, computationEP);
 
-            getComputationV2('http://localhost:8081' + computationEP, 20000).then(computations => {
+            getComputationV2('http://localhost:5501' + computationEP, 20000).then(computations => {
                 try {
                     assert.deepStrictEqual(resData1, computations);
                     done();
@@ -84,6 +88,65 @@ const initializeDataAndServer = (done) => {
                 "period": "daily",
                 "type": "string",
                 "end": "2019-01-04T15:00:00.000Z"
+            },
+            "params": {
+                "steps": {
+                    "step1": {
+                        "type": "script",
+                        "script": "http://host.docker.internal:5200/api/v1/public/collector/steps/request.js",
+                        "inputs": {
+                            "request": {
+                                "endpoint": "filebeat-*/_search",
+                                "body": {
+                                    "size": 0,
+                                    "track_total_hits": true,
+                                    "sort": [
+                                        {
+                                            "TIMESTAMP-NEXO-DATE": "desc"
+                                        }
+                                    ],
+                                    "query": {
+                                        "bool": {
+                                            "must": 
+                                                {
+                                                    "range": {
+                                                        "TIMESTAMP-NEXO-DATE": {
+                                                            "gt": ">>>period.from<<<",
+                                                            "lt": ">>>period.to<<<"
+                                                        }
+                                                    }
+                                                },
+                                            "must_not":
+                                                {
+                                                    "prefix": {
+                                                        "CODE_ERROR": "2"
+                                                    }
+                                                }
+                                            
+                                        }
+                                    },
+                                    "aggs": {
+                                        "services": {
+                                            "terms": {
+                                                "field": "PROXY.keyword",
+                                                "size": 999
+                                            }
+                                        }
+                                    }
+                                },
+                                "result": {
+                                    "type": "array",
+                                    "valueAddress": "aggregations.services.buckets",
+                                    "scopeVar": {
+                                        "$ref": "#/context/definitions/scopes/nexo/servicio"
+                                    },
+                                    "scopeKey": "key",
+                                    "scopeValue": "doc_count"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "config": {}
@@ -142,11 +205,15 @@ const initializeDataAndServer = (done) => {
 
 
     // Server initialization
-    server.deploy('test').then(() => {
-        done();
-    }).catch((err) => {
-        console.log(err);
-        done();
+    governify.init().then((commonsMiddleware) => {
+        server.deploy('test', commonsMiddleware).then(() => {
+            governify.httpClient.setRequestLogging(false);
+            //sinon.stub(console);
+            done();
+        }).catch(err1 => {
+            console.log(err1.message)
+            done(err1);
+        });
     });
 
 }
